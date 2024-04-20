@@ -1,6 +1,6 @@
 import { verifyJWT } from "../../../utils/helpers/jwt-token.helper";
 
-export const protect = async (req, res, next) => {
+export const auth = async (req, res, next) => {
   const bearer = req.headers.authorization;
 
   if (!bearer || !bearer.startsWith("Bearer ")) {

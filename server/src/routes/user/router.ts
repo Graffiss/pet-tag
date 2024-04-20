@@ -1,17 +1,14 @@
 import { Router } from "express";
 import { createNewUser, login } from "../../controllers";
-import { protect } from "../../middlewares/auth/auth";
 
 const router = Router();
-
-// router.use("/user", userRoutes);
 
 // AUTH
 
 // Register - POST /api/user
 router.post("/", createNewUser);
 // Login - POST /api/user/login
-router.post("/login", protect, login);
+router.post("/login", login);
 
 // Logout - POST /api/user/logout
 // router.post("/logout", auth, logout);

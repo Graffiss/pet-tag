@@ -19,6 +19,12 @@ enum MISSING_STATUS {
   FOUND
 }
 
+enum PET_TYPE {
+  DOG
+  CAT
+  OTHER
+}
+
 model User {
   id        String    @id @default(uuid())
   createdAt DateTime  @default(now())
@@ -27,13 +33,33 @@ model User {
   pets      Pet[]
 }
 
+model Address {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  street    String   @db.VarChar(255)
+  city      String   @db.VarChar(255)
+  state     String   @db.VarChar(255)
+  zip       String   @db.VarChar(255)
+  pets      Pet[]
+}
+
 model Pet {
   id          String   @id @default(uuid())
-  belongsToId String   @unique
+  belongsToId String   
   belongsTo   User     @relation(fields: [belongsToId], references: [id])
-  name        String   @db.VarChar(255)
-  birthdate   DateTime
-  missing     MISSING_STATUS  @default(NOT_MISSING)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  name        String   @db.VarChar(255)
+  type        PET_TYPE
+  primaryPhone String?   @db.VarChar(255)
+  secondaryPhone String? @db.VarChar(255)
+  breed       String?   @db.VarChar(255)
+  color       String?   @db.VarChar(255)
+  birthdate   DateTime?
+  vetName     String?   @db.VarChar(255)
+  addressId   String?   @unique
+  address     Address?  @relation(fields: [addressId], references: [id])
+  missing     MISSING_STATUS  @default(NOT_MISSING)
+  @@unique([id, belongsToId])
 }

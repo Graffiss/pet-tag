@@ -12,6 +12,6 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api", router).use("/api/user", userRouter).use("/pet", petRouter);
+app.use("/api", router).use("/api/user", userRouter).use("/api", petRouter);
 
 export default app;

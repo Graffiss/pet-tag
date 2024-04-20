@@ -1,17 +1,32 @@
 import { Router } from "express";
+import { createNewPet } from "../../controllers/pet/create";
+import { auth } from "../../middlewares/auth";
+import { getOnePet } from "../../controllers/pet/getOne";
+import { deletePet } from "../../controllers/pet/delete";
+import { updatePet } from "../../controllers/pet/update";
+import { getPets } from "../../controllers/pet/getPets";
+import { getPetsMissing } from "../../controllers/pet/getMissing";
 
 const router = Router();
 
-router.get("/pet", (req, res) => {
-  res.json({ message: "Pet" });
-});
+// PET
 
-router.get("/pet/:id", (req, res) => {});
+// Get all missing pets - GET /api/pet/missing
+router.get("/pet/missing", getPetsMissing);
 
-router.post("/pet", (req, res) => {});
+// Get all pets for user - GET /api/pet/:userId
+router.get("/pet", auth, getPets);
 
-router.put("/pet/:id", (req, res) => {});
+// Create new pet - POST /api/pet
+router.post("/pet", auth, createNewPet);
 
-router.delete("/pet/:id", (req, res) => {});
+// Get single pet - GET /api/pet/:id
+router.get("/pet/:id", getOnePet);
+
+// Update existing pet - PUT /api/pet/:id
+router.put("/pet/:id", auth, updatePet);
+
+// Delete pet - DELETE /api/pet/:id
+router.delete("/pet/:id", auth, deletePet);
 
 export default router;

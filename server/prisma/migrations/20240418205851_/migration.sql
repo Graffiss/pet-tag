@@ -1,0 +1,14 @@
+-- DropForeignKey
+ALTER TABLE "Pet" DROP CONSTRAINT "Pet_addressId_fkey";
+
+-- AlterTable
+ALTER TABLE "Pet" ALTER COLUMN "birthdate" DROP NOT NULL,
+ALTER COLUMN "addressId" DROP NOT NULL,
+ALTER COLUMN "breed" DROP NOT NULL,
+ALTER COLUMN "color" DROP NOT NULL,
+ALTER COLUMN "primaryPhone" DROP NOT NULL,
+ALTER COLUMN "secondaryPhone" DROP NOT NULL,
+ALTER COLUMN "vetName" DROP NOT NULL;
+
+-- AddForeignKey
+ALTER TABLE "Pet" ADD CONSTRAINT "Pet_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "Address"("id") ON DELETE SET NULL ON UPDATE CASCADE;

@@ -48,6 +48,9 @@ export function UserRegisterForm({
     event.preventDefault();
     setIsLoading(true);
 
+    console.log("Form data in registration", form.getValues());
+
+
     setTimeout(() => {
       setIsLoading(false);
     }, 3000);
@@ -115,7 +118,7 @@ export function UserRegisterForm({
                     <FormLabel>Confirm password</FormLabel>
                     <FormControl>
                       <Input
-                        id="password"
+                        id="confirm-password"
                         placeholder="********"
                         type="password"
                         autoCapitalize="none"

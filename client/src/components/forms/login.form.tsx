@@ -45,6 +45,8 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
     event.preventDefault();
     setIsLoading(true);
 
+    console.log("Form data", form.getValues());
+
     setTimeout(() => {
       setIsLoading(false);
     }, 3000);

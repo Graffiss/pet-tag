@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import SiteHeader from "@/components/site-header";
+import { ReactQueryClientProvider } from "@/components/_providers/react-query.provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,11 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={spaceGrotesk.className}>
         <div className="relative flex min-h-screen flex-col bg-background">
           <SiteHeader />
           <main className="flex flex-1 justify-center items-center">
-            <div className="container relative">{children}</div>
+            <div className="container relative">
+              <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
+            </div>
           </main>
         </div>
       </body>

@@ -19,6 +19,7 @@ const AuthenticationLayout = ({ children }: AuthenticationLayoutProps) => {
             width={300}
             height={300}
             className="relative self-center justify-center items-center m-auto"
+            priority
           />
           <div className="relative z-20">
             <blockquote className="space-y-2">

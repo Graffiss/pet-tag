@@ -18,6 +18,10 @@ const sidebarNavItems = [
     title: "Account",
     href: "/profile/account",
   },
+  {
+    title: "My pets",
+    href: "/profile/my-pets",
+  },
 ];
 
 interface SettingsLayoutProps {

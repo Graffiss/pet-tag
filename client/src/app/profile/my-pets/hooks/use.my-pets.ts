@@ -1,9 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
-const token = "";
+import { useSession } from "next-auth/react";
 
 export function useMyPets() {
+  const session = useSession();
+
+  // @ts-ignore-next-line
+  const token = session.data?.user?.accessToken;
+
   return useQuery({
     queryKey: ["myPets"],
     queryFn: async () => {

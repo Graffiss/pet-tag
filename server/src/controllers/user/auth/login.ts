@@ -13,5 +13,5 @@ export const login = async (req, res) => {
   }
 
   const token = createJWT(user);
-  res.json({ token });
+  res.json({ username: user.username, token });
 };

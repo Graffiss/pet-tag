@@ -2,20 +2,14 @@
 
 import PetCard from "@/components/pet-card";
 import { useMissingPets } from "./hooks/use.missing-pets";
-import { Spinner } from "@/components/ui/spinner";
+import { SkeletonCard } from "@/components/skeleton-card";
 
 const MissingPage = () => {
   const { data: missingPets, error, isLoading } = useMissingPets();
 
-  if (isLoading) {
-    return <Spinner />;
-  }
-
   if (error) {
     return <div>Error: {error.message}</div>;
   }
-
-  console.log(missingPets);
 
   return (
     <div className="my-6">
@@ -25,9 +19,15 @@ const MissingPage = () => {
         </h1>
       </div>
       <div className="grid grid-cols-3">
-        {missingPets.map((pet: any) => (
-          <PetCard key={pet.id} pet={pet} />
-        ))}
+        {isLoading ? (
+          <SkeletonCard />
+        ) : (
+          <>
+            {missingPets.map((pet: any) => (
+              <PetCard key={pet.id} pet={pet} />
+            ))}
+          </>
+        )}
       </div>
     </div>
   );

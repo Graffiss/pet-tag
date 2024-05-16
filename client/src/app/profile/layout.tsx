@@ -3,6 +3,8 @@ import Image from "next/image";
 
 import { Separator } from "@/components/ui/separator";
 import { SidebarNav } from "@/components/nav/sidebar-nav";
+import { auth } from "../(auth)/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Forms",
@@ -28,9 +30,16 @@ interface SettingsLayoutProps {
   children: React.ReactNode;
 }
 
-export default function SettingsLayout({ children }: SettingsLayoutProps) {
+export default async function SettingsLayout({
+  children,
+}: SettingsLayoutProps) {
+  const session = await auth();
+  if (!session) {
+    redirect("/login");
+  }
+
   return (
-    <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow-md md:shadow-xl">
+    <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow-md md:shadow-xl h-[80vh] m-10">
       <div className="md:hidden">
         <Image
           src="/examples/forms-light.png"

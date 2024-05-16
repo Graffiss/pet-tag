@@ -1,12 +1,11 @@
 "use client";
-
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
-export function MainNav() {
+export function MainNav({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
@@ -30,7 +29,7 @@ export function MainNav() {
             href="/missing"
             className={cn(
               "transition-colors hover:text-foreground/80",
-              pathname?.startsWith("/docs/components")
+              pathname?.startsWith("/missing")
                 ? "text-foreground"
                 : "text-foreground/60"
             )}>
@@ -39,16 +38,7 @@ export function MainNav() {
         </nav>
       </div>
       <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-        <Link
-          href="/login"
-          className={cn(
-            "transition-colors hover:text-foreground/80",
-            pathname?.startsWith("/login")
-              ? "text-foreground"
-              : "text-foreground/60"
-          )}>
-          Login
-        </Link>
+        {children}
       </div>
     </div>
   );

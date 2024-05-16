@@ -2,7 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main className="flex min-h-[calc(100vh-57px)] flex-col items-center justify-between p-24">
       <div className="grid grid-cols-2 gap-8">

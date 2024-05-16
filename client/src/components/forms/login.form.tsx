@@ -18,6 +18,7 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { signIn } from "@/app/(auth)/helpers/sign-in-out";
 
 interface UserLoginFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -25,7 +26,7 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const FormSchema = z.object({
-    email: z.string().min(2, {
+    username: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
     password: z.string().min(9, {
@@ -36,7 +37,7 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -45,7 +46,7 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
     event.preventDefault();
     setIsLoading(true);
 
-    console.log("Form data", form.getValues());
+    signIn(form.getValues());
 
     setTimeout(() => {
       setIsLoading(false);
@@ -60,18 +61,15 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
             <div className="grid gap-1">
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Enter your e-mail address</FormLabel>
                     <FormControl>
                       <Input
-                        id="email"
-                        placeholder="name@example.com"
-                        type="email"
-                        autoCapitalize="none"
-                        autoComplete="email"
-                        autoCorrect="off"
+                        id="username"
+                        placeholder="Username"
+                        type="text"
                         disabled={isLoading}
                         {...field}
                       />
@@ -93,9 +91,6 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
                         id="password"
                         placeholder="********"
                         type="password"
-                        autoCapitalize="none"
-                        autoComplete="password"
-                        autoCorrect="off"
                         disabled={isLoading}
                         {...field}
                       />

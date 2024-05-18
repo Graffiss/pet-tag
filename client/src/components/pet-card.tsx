@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
 const notifications = [
   {
@@ -21,9 +22,16 @@ const notifications = [
 type CardProps = React.ComponentProps<typeof Card> & {
   pet: any;
   simplified?: boolean;
+  footer?: React.ReactNode;
 };
 
-const PetCard = ({ className, simplified, pet, ...props }: CardProps) => {
+const PetCard = ({
+  className,
+  simplified,
+  pet,
+  footer,
+  ...props
+}: CardProps) => {
   return (
     <Card
       className={cn(`w-[${simplified ? 200 : 380}px] m-2`, className)}
@@ -64,9 +72,7 @@ const PetCard = ({ className, simplified, pet, ...props }: CardProps) => {
           </div>
         )}
       </CardContent>
-      <CardFooter>
-        <Button className="w-full">More details</Button>
-      </CardFooter>
+      <CardFooter>{footer}</CardFooter>
     </Card>
   );
 };

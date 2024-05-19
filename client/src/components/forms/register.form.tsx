@@ -18,6 +18,9 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface UserRegisterFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -27,8 +30,20 @@ export function UserRegisterForm({
 }: UserRegisterFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
+  const { mutateAsync: registerUser } = useMutation({
+    mutationFn: async (payload: z.infer<typeof FormSchema>) => {
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user`,
+        payload
+      );
+      return data.data;
+    },
+  });
+
+  const router = useRouter();
+
   const FormSchema = z.object({
-    email: z.string().min(2, {
+    username: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
     password: z.string().min(9, {
@@ -39,7 +54,7 @@ export function UserRegisterForm({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -48,8 +63,14 @@ export function UserRegisterForm({
     event.preventDefault();
     setIsLoading(true);
 
-    console.log("Form data in registration", form.getValues());
+    console.log("Form values in register form: ", form.getValues());
 
+    try {
+      await registerUser(form.getValues());
+      router.push("/profile");
+    } catch (error) {
+      console.error("Error registering user: ", error);
+    }
 
     setTimeout(() => {
       setIsLoading(false);
@@ -64,18 +85,15 @@ export function UserRegisterForm({
             <div className="grid gap-1">
               <FormField
                 control={form.control}
-                name="email"
+                name="username"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input
-                        id="email"
+                        id="username"
                         placeholder="name@example.com"
-                        type="email"
-                        autoCapitalize="none"
-                        autoComplete="email"
-                        autoCorrect="off"
+                        type="text"
                         disabled={isLoading}
                         {...field}
                       />

@@ -5,11 +5,14 @@ import { Spinner } from "@/components/ui/spinner";
 import { useParams } from "next/navigation";
 import { useEditPet } from "./hooks/use.edit-pet";
 import { Separator } from "@/components/ui/separator";
+import { usePetProfile } from "@/app/pet/[id]/hooks/use.pet-profile";
 
 const EditPetProfile = () => {
   const { id } = useParams();
 
-  const { data: pet, error, isLoading } = useEditPet(id as string);
+  const { data: pet, error, isLoading } = usePetProfile(id as string);
+
+  const { mutateAsync: editPet } = useEditPet(id as string);
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -28,7 +31,7 @@ const EditPetProfile = () => {
         </p>
       </div>
       <Separator />
-      <PetProfileForm pet={pet} />
+      <PetProfileForm pet={pet} submit={editPet} />
     </div>
   );
 };

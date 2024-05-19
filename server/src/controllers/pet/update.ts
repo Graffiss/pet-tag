@@ -10,9 +10,11 @@ export const updatePet = async (req, res) => {
     },
     data: {
       name: req.body.name,
-      birthdate: req.body.birthdate,
+      birthdate: req.body.birthdate
+        ? new Date(req.body.birthdate).toISOString()
+        : undefined,
       breed: req.body.breed,
-      type: req.body.type,
+      type: req.body.petType,
       color: req.body.color,
       primaryPhone: req.body.primaryPhone,
       secondaryPhone: req.body.secondaryPhone,

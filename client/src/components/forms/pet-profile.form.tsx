@@ -23,6 +23,12 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toISOString().slice(0, 10);
+};
 
 export enum MISSING_STATUS {
   MISSING = "MISSING",
@@ -53,33 +59,37 @@ export interface PetProfile {
   vetName: string | null;
 }
 
+export const PetFormSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  breed: z.string().nullish(),
+  color: z.string().nullish(),
+  primaryPhone: z.string().nullish(),
+  secondaryPhone: z.string().nullish(),
+  vetName: z.string().nullish(),
+  birthdate: z.string().nullish(),
+  petType: z.nativeEnum(PET_TYPE).readonly(),
+  missingStatus: z.nativeEnum(MISSING_STATUS),
+});
+
 interface PetProfileFormProps extends React.HTMLAttributes<HTMLDivElement> {
   pet?: PetProfile;
+  // submit: (payload: z.infer<typeof PetFormSchema>) => void;
+  submit: any;
 }
 
 export function PetProfileForm({
   className,
   pet,
+  submit,
   ...props
 }: PetProfileFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const router = useRouter();
 
-  const FormSchema = z.object({
-    name: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
-    }),
-    breed: z.string().nullish(),
-    color: z.string().nullish(),
-    primaryPhone: z.string().nullish(),
-    secondaryPhone: z.string().nullish(),
-    vetName: z.string().nullish(),
-    birthdate: z.string().nullish(),
-    petType: z.nativeEnum(PET_TYPE).readonly(),
-    missingStatus: z.nativeEnum(MISSING_STATUS),
-  });
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof PetFormSchema>>({
+    resolver: zodResolver(PetFormSchema),
     defaultValues: {
       name: pet?.name || "",
       breed: pet?.breed || "",
@@ -87,13 +97,25 @@ export function PetProfileForm({
       primaryPhone: pet?.primaryPhone || "",
       secondaryPhone: pet?.secondaryPhone || "",
       vetName: pet?.vetName || "",
-      birthdate: pet?.birthdate || "",
+      birthdate: pet?.birthdate ? formatDate(pet.birthdate) : "",
       petType: pet?.type || PET_TYPE.DOG,
       missingStatus: pet?.missing || MISSING_STATUS.NOT_MISSING,
     },
   });
 
-  async function onSubmit(event: React.SyntheticEvent) {}
+  async function onSubmit(event: React.SyntheticEvent) {
+    event.preventDefault();
+    setIsLoading(true);
+    const payload = form.getValues();
+
+    try {
+      await submit(payload);
+      router.push("/profile/my-pets");
+    } catch (error) {
+      console.error(error);
+    }
+    setIsLoading(false);
+  }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>

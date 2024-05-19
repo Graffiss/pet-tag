@@ -32,7 +32,7 @@ const PetProfile = () => {
       <p>{data.primaryPhone}</p>
       <p>{data.secondaryPhone}</p>
       <p>{data.vetName}</p>
-      <p>{data.birthdate}</p>
+      <p>{new Date(data.birthdate).toLocaleDateString()}</p>
       <p>{data.type}</p>
       <p>{data.missing}</p>
     </div>

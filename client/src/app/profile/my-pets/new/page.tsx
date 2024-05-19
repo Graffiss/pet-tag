@@ -2,8 +2,11 @@
 
 import { PetProfileForm } from "@/components/forms/pet-profile.form";
 import { Separator } from "@/components/ui/separator";
+import { useCreatePet } from "./hooks/use.create-pet";
 
 const CreateNewPetProfile = () => {
+  const { mutateAsync: createPet } = useCreatePet();
+
   return (
     <div className="space-y-6">
       <div>
@@ -13,7 +16,7 @@ const CreateNewPetProfile = () => {
         </p>
       </div>
       <Separator />
-      <PetProfileForm />
+      <PetProfileForm submit={createPet} />
     </div>
   );
 };

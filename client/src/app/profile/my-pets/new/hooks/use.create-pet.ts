@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-export function useEditPet(id: string) {
+export function useCreatePet() {
   const session = useSession();
 
   // @ts-ignore-next-line
@@ -11,8 +11,8 @@ export function useEditPet(id: string) {
 
   return useMutation({
     mutationFn: async (payload: PetProfile) => {
-      const { data } = await axios.put(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/pet/${id}`,
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/pet`,
         payload,
         {
           headers: {

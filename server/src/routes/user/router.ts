@@ -39,4 +39,14 @@ router.post("/login", login);
 // DELETE USER
 // router.delete("/", auth, deleteUser);
 
+router.use((error, req, res, next) => {
+  if (error.type === "auth") {
+    res.status(401).json({ error: "Unauthorized" });
+  } else if (error.type === "input") {
+    res.status(400).json({ error: "Invalid input" });
+  } else {
+    res.status(500).json({ error: `Something went wrong: ${error.message}` });
+  }
+});
+
 export default router;
